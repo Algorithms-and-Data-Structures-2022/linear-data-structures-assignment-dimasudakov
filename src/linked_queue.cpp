@@ -4,39 +4,67 @@ namespace assignment {
 
   LinkedQueue::~LinkedQueue() {
 
-    // эквивалентно очистке очереди
-    LinkedQueue::Clear();
+      // эквивалентно очистке очереди
+      LinkedQueue::Clear();
   }
 
   void LinkedQueue::Enqueue(int value) {
-    // Write your code here ...
+      if(size_ == 0) {
+        front_ = new Node(value, nullptr);
+        back_ = front_;
+        size_++;
+        return;
+      }
+      Node *p = new Node(value);
+      back_ -> next = p;
+      back_ = p;
+      size_++;
   }
 
   bool LinkedQueue::Dequeue() {
-    // Write your code here ...
-    return false;
+      if(size_ == 0) return false;
+      if(size_ == 1) {
+          Clear();
+          return true;
+      }
+      size_--;
+      Node *p = front_;
+      front_ = front_ -> next;
+      delete p;
+      return true;
   }
 
   void LinkedQueue::Clear() {
-    // Write your code here ...
+      Node *cur = front_;
+      for(int i = 0; i < size_; i++) {
+          if(i == size_ - 1) {
+              delete cur;
+              break;
+          }
+          Node* mem = cur -> next;
+          delete cur;
+          cur = mem;
+      }
+      back_ = front_ = nullptr;
+      size_ = 0;
   }
 
   std::optional<int> LinkedQueue::front() const {
-    // Write your code here ...
-    return std::nullopt;
+      if(size_ == 0) return std::nullopt;
+      return front_ -> value;
   }
 
   std::optional<int> LinkedQueue::back() const {
-    // Write your code here ...
-    return std::nullopt;
+      if(size_ == 0) return std::nullopt;
+      return back_ -> value;
   }
 
   bool LinkedQueue::IsEmpty() const {
-    return false;
+      return (size_ == 0);
   }
 
   int LinkedQueue::size() const {
-    return 0;
+      return size_;
   }
 
   // ДЛЯ ТЕСТИРОВАНИЯ
